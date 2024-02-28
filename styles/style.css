@@ -22,10 +22,17 @@ body {
     font-family: Roboto,Helvetica,Arial,sans-serif;;
 }
 
+section {
+    margin-top: 4em;
+}
+
 h2 {
-    margin: 4em 0 2em;
     font-size: 2em;
     color: var(--text-yellow);
+}
+
+li {
+    list-style: none;
 }
 
 /* Utils */
@@ -84,6 +91,17 @@ h2 {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 10px;
+    border: 2px solid var(--header-grey);
+    transition: 0.2s;
+}
+.header__fav-btn:hover {
+    border: 2px solid var(--text-yellow);
+}
+.header__fav-btn:active {
+    background-color: var(--text-yellow);
+    color: var(--primary-black);
+    transform: scale(0.8);
 }
 
 /* Carousel */
@@ -144,6 +162,66 @@ h2 {
 
 /* Här skriver ni er CSS */
 
+/* Favorites */
+.favorites ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.favorites li {
+    background: #131314;
+    height: 42em;
+    position: relative;
+    transition: 0.2s;
+    transform: scale(0.75);
+    margin: -50px;
+}
+
+.favorites li h3 {
+    margin-top: 40px;
+    margin-left: 10px;
+    max-width: 290px;
+}
+
+/* Results */
+.results {
+    background-color: var(--primary-grey);
+    border-radius: 10px;
+    padding: 2em;
+}
+
+.results h2 {
+    margin-bottom: 1em;
+}
+
+.results ul {
+    background-color: var(--primary-black);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3em;
+    padding: 3em;
+    height: 100%;
+}
+
+.results li {
+    background: #131314;
+    position: relative;
+    transition: 0.2s;
+}
+
+.results li img {
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.results li h3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    max-width: 290px;
+}
+
 /* Popular movies section */
 .popular__card-container {
     display: grid;
@@ -152,15 +230,21 @@ h2 {
     padding-bottom: 10em;
 }
 
+.popular__title {
+    margin-bottom: 2em;
+}
+
 .popular-card {
     background: #131314;
     height: 40em;
-    overflow: inherit;
     position: relative;
+    transition: 0.2s;
 }
 
 .popular-card-img {
     width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .popular-card-title {
@@ -187,6 +271,37 @@ h2 {
 .popular-card-favBtn:active {
     transform: scale(0.7);
     background-color: #6d6d6d;
+}
+
+
+
+/* Movie.html */
+.movie-details {
+    padding: 2em;
+    background: #131314;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2em;
+}
+
+.movie-details h1 {
+    font-size: 32px;
+}
+
+.movie-details h2 {
+    font-size: 24px;
+    color: #ffffff;
+    margin: 0;
+    justify-self: end;
+}
+
+.movie-details #movieSummary {
+    margin-left: -100%;
+}
+
+.movie-details footer p {
+    margin: 10px 0;
 }
 
 /* Media Queries */

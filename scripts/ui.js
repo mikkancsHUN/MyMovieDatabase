@@ -1,12 +1,35 @@
+// Render 5 movie trailer
+function renderRandomTrailers(movies) {
+    const slidesContainer = document.querySelector('[data-slides]');
+    
+    // Let's mix the movies
+    const shuffledMovies = [...movies];
+    for (let i = shuffledMovies.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledMovies[i], shuffledMovies[j]] = [shuffledMovies[j], shuffledMovies[i]];
+    }
+
+    // We use the first 5 films
+    const selectedMovies = shuffledMovies.slice(0, 5);
+
+    // Setting the src attribute of iframe elements
+    selectedMovies.forEach((movie, index) => {
+        const iframe = slidesContainer.children[index].querySelector('iframe');
+        iframe.src = movie.trailer_link;
+    });
+}
+
+
 // Render top20 movies
 function renderTopMovies(data) {
-    console.log('render movies');
+    console.log('movies rendered');
 
-    // Popilar movie container
+    // Popular movie container
     const popularCardContainer = document.querySelector('#popularCardContainer');
     popularCardContainer.classList.add('popular-card-container');
 
     data.forEach(movie => {
+
         // Movie Cards
         const popularCard = document.createElement('div');
         popularCard.classList.add('popular-card');
@@ -15,9 +38,14 @@ function renderTopMovies(data) {
         // Movie Img
         const popularCardImg = document.createElement('img');
         popularCardImg.src = movie.poster;
+        popularCardImg.alt = 'picture of the movie: ' + movie.title;
         popularCardImg.classList.add('popular-card-img');
         popularCard.appendChild(popularCardImg);
         
+        popularCardImg.addEventListener('click', () => {
+            window.location.href = `movie.html?id=${movie.imdbid}`;
+        })
+
         // Movie Title
         const popularCardTitle = document.createElement('h3');
         popularCardTitle.textContent = movie.title;
@@ -35,5 +63,3 @@ function renderTopMovies(data) {
 document.addEventListener('DOMContentLoaded', () => {
     fetchDataFromAPI();
 });
-
-

@@ -1,14 +1,15 @@
 'use strict';
 
 window.addEventListener('load', () => {
-    console.log('load');
-    // Javasoltan anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
+    console.log('loaded');
+    // Förslagsvis anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
     setupCarousel();
+    showFavorites();
 });
 
 // Denna funktion skapar funktionalitet för karusellen
 function setupCarousel() {
-    console.log('carousel');
+    console.log('carousel loaded');
     const buttons = document.querySelectorAll('[data-carousel-btn]');
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -28,3 +29,15 @@ function setupCarousel() {
         });
     });
 }
+
+// Favorites button function
+function showFavorites() {
+
+    const headerFavBtn = document.querySelector('#favBtn');
+    
+    headerFavBtn.addEventListener('click', () => {
+        const favoritesContainer = document.querySelector('#favoritesContainer');
+        favoritesContainer.classList.toggle('d-none');
+        console.log('Button clicked');
+    })
+};
