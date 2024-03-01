@@ -104,6 +104,11 @@ li {
     transform: scale(0.8);
 }
 
+.--clicked {
+    background-color: var(--text-yellow);
+    color: var(--primary-black);
+}
+
 /* Carousel */
 .carousel {
     margin: auto;
@@ -194,7 +199,7 @@ li {
     margin-bottom: 1em;
 }
 
-.results ul {
+.results__list {
     background-color: var(--primary-black);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -203,23 +208,52 @@ li {
     height: 100%;
 }
 
-.results li {
+.results__card {
     background: #131314;
-    position: relative;
     transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.results li img {
+.results__card-img {
     width: 100%;
     cursor: pointer;
     transition: 0.2s;
 }
 
-.results li h3 {
-    margin-top: 30px;
-    margin-bottom: 20px;
+.results__info {
+    width: 100%;
+    height: 100px;
+    background-color: #131314;
+    display: flex;
+    position: relative;
+}
+
+.results__card-title {
+    margin-top: 1em;
     margin-left: 10px;
-    max-width: 290px;
+    max-width: 250px;
+}
+
+.results-card-favBtn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0.5em;
+    border-radius: 50%;
+}
+.results-card-favBtn:hover {
+    transform: scale(1.2);
+}
+.results-card-favBtn:hover path {
+    fill: var(--text-yellow);
+}
+.results-card-favBtn:active {
+    transform: scale(0.7);
+    background-color: #6d6d6d;
 }
 
 /* Popular movies section */
@@ -255,8 +289,8 @@ li {
 
 .popular-card-favBtn {
     position: absolute;
-    right: 20px;
-    bottom: 30px;
+    right: 10px;
+    bottom: 10px;
     cursor: pointer;
     transition: 0.2s;
     padding: 0.5em;

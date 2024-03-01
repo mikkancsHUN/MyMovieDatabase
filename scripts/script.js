@@ -7,6 +7,14 @@ window.addEventListener('load', () => {
     showFavorites();
 });
 
+// Search button
+const searchBtn = document.querySelector('#searchBtn');
+searchBtn.addEventListener('click', function(event) {
+    event.preventDefault(); 
+    searchMovies();
+});
+
+
 // Denna funktion skapar funktionalitet för karusellen
 function setupCarousel() {
     console.log('carousel loaded');
@@ -38,6 +46,7 @@ function showFavorites() {
     headerFavBtn.addEventListener('click', () => {
         const favoritesContainer = document.querySelector('#favoritesContainer');
         favoritesContainer.classList.toggle('d-none');
-        console.log('Button clicked');
+        headerFavBtn.classList.toggle('--clicked');
+        console.log('Favoritesbtn clicked');
     })
 };
