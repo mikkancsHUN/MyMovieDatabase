@@ -16,6 +16,7 @@ async function searchMovies() {
     // HTML elements
     const searchInput = document.querySelector('#searchInput');
     const movieName = searchInput.value.trim();
+    const resultsSection = document.querySelector('#dNone');
 
     if (!movieName) {
         console.error('Please enter a valid search term.');
@@ -30,6 +31,8 @@ async function searchMovies() {
         if (data.Response === 'True') {
             // movies on the console
             renderSearchResults(data.Search);
+            resultsSection.classList.remove('d-none');
+            
         } else {
             // error messages
             console.error('Error during search:', data.Error || 'An unknown error has occurred.');
