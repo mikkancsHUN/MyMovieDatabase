@@ -237,6 +237,10 @@ li {
     background-color: #6d6d6d;
 }
 
+.--favorited-btn path{
+    fill: var(--text-yellow);
+}
+
 /* Results */
 .results {
     background-color: var(--primary-grey);

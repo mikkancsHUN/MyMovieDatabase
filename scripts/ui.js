@@ -20,40 +20,90 @@ function renderRandomTrailers(movies) {
     });
 }
 
+
 // Add favorite movies
 function addToFavorites(movie) {
+    // Check if localStorage already has a 'favorites' key
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
-    // Favorite movies container
-    const favoritesList = document.querySelector('#favoritesList');
+    // Check if the movie is already in favorites
+    const existingMovie = favorites.find(fav => fav.imdbID === movie.imdbID);
 
-    // Favorite movie card
-    const favoriteMovie = document.createElement('li');
-    favoriteMovie.classList.add('favorites__movie-card');
-    favoritesList.appendChild(favoriteMovie);
+    if (!existingMovie) {
+        // Add the movie to favorites
+        favorites.push(movie);
+    } else {
+        // Remove the movie from favorites
+        favorites = favorites.filter(fav => fav.imdbID !== movie.imdbID);
+    }
 
-    // Favorite Btn
-    const favoriteCardFavBtn = document.createElement('span');
-    favoriteCardFavBtn.innerHTML = '<svg width="30px" height="30px" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>'
-    favoriteCardFavBtn.classList.add('favorite-card-favBtn');
-    favoriteMovie.appendChild(favoriteCardFavBtn);
+    // Save the updated favorites to localStorage
+    localStorage.setItem('favorites', JSON.stringify(favorites));
 
-    // Favorite movie img
-    const favoriteMovieImg = document.createElement('img');
-    favoriteMovieImg.src = movie.Poster;
-    favoriteMovieImg.alt = 'poster of the movie: ' + movie.Title;
-    favoriteMovie.appendChild(favoriteMovieImg);
-
-    // Favorite movie info
-    const favoriteInfo = document.createElement('div');
-    favoriteInfo.classList.add('favorites__info');
-    favoriteMovie.appendChild(favoriteInfo);
-
-    // Favorite movie title
-    const favoriteMovieTitle = document.createElement('h3');
-    favoriteMovieTitle.textContent = movie.Title;
-    favoriteMovieTitle.classList.add('favorites__movie-title');
-    favoriteInfo.appendChild(favoriteMovieTitle);
+    // Update the UI to reflect the changes
+    updateFavoritesUI();
 }
+
+
+// Remove movie from favorites
+function removeFromFavorites(movie) {
+    // Get favorites from localStorage
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    // Filter out the movie to be removed
+    favorites = favorites.filter(fav => fav.imdbID !== movie.imdbID);
+
+    // Save the updated favorites to localStorage
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+
+    // Update the UI to reflect the changes
+    updateFavoritesUI();
+
+    
+}
+
+
+// Update Favorites UI
+function updateFavoritesUI() {
+    const favoritesList = document.querySelector('#favoritesList');
+    favoritesList.innerHTML = ''; // Clear previous favorites
+
+    // Get the updated favorites from localStorage
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    // Render each favorite movie
+    favorites.forEach(favorite => {
+        // Favorite movie card
+        const favoriteMovie = document.createElement('li');
+        favoriteMovie.classList.add('favorites__movie-card');
+        favoritesList.appendChild(favoriteMovie);
+
+        // Favorite Btn
+        const favoriteCardFavBtn = document.createElement('span');
+        favoriteCardFavBtn.innerHTML = '<svg width="30px" height="30px" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>';
+        favoriteCardFavBtn.classList.add('favorite-card-favBtn');
+        favoriteCardFavBtn.addEventListener('click', () => removeFromFavorites(favorite));
+        favoriteMovie.appendChild(favoriteCardFavBtn);
+
+        // Favorite movie img
+        const favoriteMovieImg = document.createElement('img');
+        favoriteMovieImg.src = favorite.Poster;
+        favoriteMovieImg.alt = 'poster of the movie: ' + favorite.Title;
+        favoriteMovie.appendChild(favoriteMovieImg);
+
+        // Favorite movie info
+        const favoriteInfo = document.createElement('div');
+        favoriteInfo.classList.add('favorites__info');
+        favoriteMovie.appendChild(favoriteInfo);
+
+        // Favorite movie title
+        const favoriteMovieTitle = document.createElement('h3');
+        favoriteMovieTitle.textContent = favorite.Title;
+        favoriteMovieTitle.classList.add('favorites__movie-title');
+        favoriteInfo.appendChild(favoriteMovieTitle);
+    });
+}
+
 
 // Render searched movies
 function renderSearchedMovies(movies) {
@@ -67,7 +117,7 @@ function renderSearchedMovies(movies) {
     // Render each movie item
     movies.forEach(movie => {
 
-        // Movie li item
+        // Movie Card
         const resultCard = document.createElement('article');
         resultCard.classList.add('results__card');
         resultList.appendChild(resultCard);
@@ -77,7 +127,7 @@ function renderSearchedMovies(movies) {
         resultCardImg.src = movie.Poster;
         resultCardImg.alt = 'poster of the movie: ' + movie.Title;
         resultCardImg.classList.add('results__card-img');
-        resultCardImg.dataset.imdbid = movie.imdbID; // Hozzáadott sor
+        resultCardImg.dataset.imdbid = movie.imdbID;
         resultCard.appendChild(resultCardImg);
 
         resultCardImg.addEventListener('click', function() {
@@ -99,13 +149,25 @@ function renderSearchedMovies(movies) {
         const resultCardFavBtn = document.createElement('span');
         resultCardFavBtn.innerHTML = '<svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>';
         resultCardFavBtn.classList.add('results-card-favBtn');
+        
+        // Check if the movie is in favorites and update the button style
+        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const isFavorite = favorites.some(fav => fav.imdbID === movie.imdbID);
+        if (isFavorite) {
+            resultCardFavBtn.classList.add('--favorited-btn');
+        }
+
         resultCardInfoContainer.appendChild(resultCardFavBtn);
 
         resultCardFavBtn.addEventListener('click', function() {
             addToFavorites(movie);
+            
+            // Re-render the movies after the button click
+            renderSearchedMovies(movies);
         });
     });
 }
+
 
 // Render top20 movies
 function renderTopMovies(data) {
@@ -117,7 +179,7 @@ function renderTopMovies(data) {
     // Render each movie item
     data.forEach(movie => {
 
-        // Movie Cards
+        // Movie Card
         const popularCard = document.createElement('article');
         popularCard.classList.add('popular-card');
         popularCardContainer.appendChild(popularCard);
@@ -146,13 +208,13 @@ function renderTopMovies(data) {
         popularCardInfoContainer.appendChild(popularCardTitle);
 
         // Favorite Btn
-        const popularCardFavBtn = document.createElement('span');
-        popularCardFavBtn.innerHTML = '<svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>'
-        popularCardFavBtn.classList.add('popular-card-favBtn');
-        popularCardInfoContainer.appendChild(popularCardFavBtn);
-        popularCardFavBtn.addEventListener('click', function() {
-            addToFavorites(movie);
-        });
+        // const popularCardFavBtn = document.createElement('span');
+        // popularCardFavBtn.innerHTML = '<svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>'
+        // popularCardFavBtn.classList.add('popular-card-favBtn');
+        // popularCardInfoContainer.appendChild(popularCardFavBtn);
+        // popularCardFavBtn.addEventListener('click', function() {
+        //     addToFavorites(movie);
+        // });
     });
 }
 
